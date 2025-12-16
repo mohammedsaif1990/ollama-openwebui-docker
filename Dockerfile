@@ -1,8 +1,5 @@
-FROM seefkordia/ollama-openwebui-base:1.0.0
-
-# Set NVIDIA environment variables for GPU access
-ENV NVIDIA_VISIBLE_DEVICES=all
-ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
+# Use the working base that contains CUDA & GPU support
+FROM thelocallab/ollama-openwebui:latest
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -28,22 +25,14 @@ RUN git clone https://github.com/Syllo/nvtop.git /tmp/nvtop && \
     mv src/nvtop /usr/local/bin/ && chmod +x /usr/local/bin/nvtop && \
     cd / && rm -rf /tmp/nvtop
 
-# Download and install Ollama CLI
-RUN wget -O /tmp/ollama.tgz https://ollama.com/download/ollama-linux-amd64.tgz && \
-    mkdir -p /usr/local/bin/ollama_tmp && \
-    tar -xzf /tmp/ollama.tgz -C /usr/local/bin/ollama_tmp && \
-    find /usr/local/bin/ollama_tmp -type f -name 'ollama' -exec mv {} /usr/local/bin/ollama \; && \
-    chmod +x /usr/local/bin/ollama && \
-    rm -rf /tmp/ollama.tgz /usr/local/bin/ollama_tmp
-
-# Copy updated entrypoint
+# Copy custom entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Expose OpenWebUI port
+# Expose the UI port
 EXPOSE 8080
 
-# Use the custom entrypoint
+# Set the custom entrypoint
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Default CMD to start OpenWebUI
