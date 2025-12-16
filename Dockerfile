@@ -1,5 +1,9 @@
 FROM seefkordia/ollama-openwebui-base:1.0.0
 
+# Set NVIDIA environment variables for GPU access
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
         htop \
@@ -32,7 +36,7 @@ RUN wget -O /tmp/ollama.tgz https://ollama.com/download/ollama-linux-amd64.tgz &
     chmod +x /usr/local/bin/ollama && \
     rm -rf /tmp/ollama.tgz /usr/local/bin/ollama_tmp
 
-# Copy entrypoint
+# Copy updated entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
