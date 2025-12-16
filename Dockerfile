@@ -28,8 +28,8 @@ RUN git clone https://github.com/Syllo/nvtop.git /tmp/nvtop && \
 RUN wget -O /tmp/ollama.tgz https://ollama.com/download/ollama-linux-amd64.tgz && \
     mkdir -p /usr/local/bin/ollama_tmp && \
     tar -xzf /tmp/ollama.tgz -C /usr/local/bin/ollama_tmp && \
-    # find the binary inside the extracted folder and move it
-    mv /usr/local/bin/ollama_tmp/*/ollama /usr/local/bin/ollama && \
+    # find the 'ollama' binary wherever it is
+    find /usr/local/bin/ollama_tmp -type f -name 'ollama' -exec mv {} /usr/local/bin/ollama \; && \
     chmod +x /usr/local/bin/ollama && \
     rm -rf /tmp/ollama.tgz /usr/local/bin/ollama_tmp
 
