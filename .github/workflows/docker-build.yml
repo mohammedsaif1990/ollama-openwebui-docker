@@ -26,5 +26,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile    # explicitly point to Dockerfile
           push: true
           tags: seefkordia/ollama-openwebui-custom:latest
