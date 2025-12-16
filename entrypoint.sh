@@ -12,7 +12,7 @@ ollama serve &
 sleep 10
 
 # Pull required models if not already present
-MODELS=("llama3:8b" "qwen2.5-coder:1.5b")
+MODELS=("gpt-oss:120b")
 for MODEL in "${MODELS[@]}"; do
     if ! ollama list | grep -q "$MODEL"; then
         echo "Pulling model: $MODEL..."
